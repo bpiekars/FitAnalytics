@@ -5,6 +5,7 @@
     <option name="PARENT_ENVS" value="true" />
     <envs>
       <env name="PYTHONUNBUFFERED" value="1" />
+      <env name="set FLASK_ENV" value="development" />
       <env name="FLASK_APP" value="fitanalytics.py" />
     </envs>
     <option name="SDK_HOME" value="" />
