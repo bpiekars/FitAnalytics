@@ -37,9 +37,9 @@ app.register_blueprint(fitbit_blueprint, url_prefix="/login")
 def index():
     if not authd_client:
         return redirect(url_for("https://www.fitbit.com/oauth2/authorize"))
-        resp = fitbit_blueprint.session.get("/user")
-        assert resp.ok
-        print("Here's the content of my response: " + resp.content)
+    resp = fitbit_blueprint.session.get("/user")
+    assert resp.ok
+    print("Here's the content of my response: " + resp.content)
     # return 'Hello world!'
 
 
