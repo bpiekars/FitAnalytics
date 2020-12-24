@@ -1,4 +1,3 @@
-import fitbit
 from flask import Flask, redirect, url_for
 from flask_dance.consumer import OAuth2ConsumerBlueprint
 
@@ -7,42 +6,54 @@ from flask_dance.consumer import OAuth2ConsumerBlueprint
 # TODO : Get authorization/access tokens working
 
 # ./gather_keys_oauth2.py
-CLIENT_ID = 'secret'  # OAuth 2.0 Client ID
-CLIENT_SECRET = 'secret'  # Client Secret
-access_token = "null"  # When using Implicit Grant Flow, can change lifetime of the access token
-refresh_token = "null"  # Refreshing token requires use of client secret
+CLIENT_ID = '#####'  # OAuth 2.0 Client ID
+CLIENT_SECRET = 'null'  # Client Secret
+access_token = 'null'  # When using Implicit Grant Flow, can change lifetime of the access token
+refresh_token = 'null'  # Refreshing token requires use of client secret
 #  Access tokens obtained via the Implicit Grant Flow only stored on the device used to obtain the authorization
 #  If your application has a web server component, application should use the Authorization Code Grant Flow
-authd_client = fitbit.Fitbit(CLIENT_ID, CLIENT_SECRET,
-                             access_token='secret',
-                             refresh_token='secret')
-authd_client.sleep()
+# server = Oauth2.OAuth2Server(CLIENT_ID, CLIENT_SECRET)
+# server.browser_authorize()
+# ACCESS_TOKEN = str(server.fitbit.client.session.token['access_token'])
+# REFRESH_TOKEN = str(server.fitbit.client.session.token['refresh_token'])
+# auth2_client = fitbit.Fitbit(CLIENT_ID, CLIENT_SECRET, oauth2=True, access_token=ACCESS_TOKEN,
+#                            refresh_token=REFRESH_TOKEN)
+# authd_client = fitbit.Fitbit(CLIENT_ID, CLIENT_SECRET,
+# access_token=access_token,
+# refresh_token=refresh_token)
+# auth2_client.sleep()
+# authd_client.sleep()
 
 # Flask OAuth2 Custom Blueprint for Fitbit API
 app = Flask(__name__)
 fitbit_blueprint = OAuth2ConsumerBlueprint(
-    "Fitbit Web API", __name__,
+    "fitbit-api", __name__,
     client_id=CLIENT_ID,
     client_secret=CLIENT_SECRET,
-    base_url="www.fitbit.com",
+    base_url="https://www.fitbit.com",
     token_url="https://api.fitbit.com/oauth2/token",
     authorization_url="https://www.fitbit.com/oauth2/authorize",
 )
 app.register_blueprint(fitbit_blueprint, url_prefix="/login")
 
+app.secret_key = CLIENT_SECRET  # Replace this
 
-# app.secret_key = CLIENT_SECRET  # Replace this
 
 @app.route("/")
 def index():
-    if not authd_client:
-        return redirect(url_for("https://www.fitbit.com/oauth2/authorize"))
-    resp = fitbit_blueprint.session.get("/user")
-    assert resp.ok
-    print("Here's the content of my response: " + resp.content)
-    # return 'Hello world!'
+    return "Hello world"
 
 
-# Redirect URI = http://127.0.0.1:8080/
+@app.route("/success")
+def access():
+    return redirect(url_for("https://api.fitbit.com/1/user/-/profile.json"))
+
+
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+    return redirect(url_for("fitbit-api.login"))
+
+
+# Redirect URI = http://127.0.0.1:
 if __name__ == '__main__':
-    app.run(host="localhost", port=8080, debug=True)
+    app.run(host="localhost", port=5000, debug=True)
