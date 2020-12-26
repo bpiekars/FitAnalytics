@@ -1,0 +1,14 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <meta content="ie=edge" http-equiv="X-UA-Compatible">
+    <link href="{{ url_for('static', filename='css/main.css') }}" rel="stylesheet">
+    {% block head %}{% endblock %}
+</head>
+
+<body>
+{% block body %}{% endblock %}
+</body>
+</html>

@@ -1,5 +1,6 @@
-from flask import Flask, redirect, url_for
+from flask import Flask, redirect, url_for, render_template
 from flask_dance.consumer import OAuth2ConsumerBlueprint
+from flask_sqlalchemy import SQLAlchemy
 
 # TODO : Work with OAuth2 Authorization Flow to Hide client_id, client_secret, access_token, refresh_token
 # TODO : Get flask to redirect to fitbit authorization login page
@@ -17,14 +18,14 @@ refresh_token = 'null'  # Refreshing token requires use of client secret
 # REFRESH_TOKEN = str(server.fitbit.client.session.token['refresh_token'])
 # auth2_client = fitbit.Fitbit(CLIENT_ID, CLIENT_SECRET, oauth2=True, access_token=ACCESS_TOKEN,
 #                            refresh_token=REFRESH_TOKEN)
-# authd_client = fitbit.Fitbit(CLIENT_ID, CLIENT_SECRET,
-# access_token=access_token,
-# refresh_token=refresh_token)
 # auth2_client.sleep()
-# authd_client.sleep()
 
 # Flask OAuth2 Custom Blueprint for Fitbit API
 app = Flask(__name__)
+# Configuring an app db using SQLAlchemy
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///test.db'
+db = SQLAlchemy(app)  # Initializing a SQLite database
+# Need to create Database columns
 fitbit_blueprint = OAuth2ConsumerBlueprint(
     "fitbit-api", __name__,
     client_id=CLIENT_ID,
@@ -40,7 +41,7 @@ app.secret_key = CLIENT_SECRET  # Replace this
 
 @app.route("/")
 def index():
-    return "Hello world"
+    return render_template('index.html')
 
 
 @app.route("/success")
