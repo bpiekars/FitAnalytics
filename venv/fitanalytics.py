@@ -7,11 +7,10 @@ from flask_dance.consumer import OAuth2ConsumerBlueprint
 
 # ./gather_keys_oauth2.py
 CLIENT_ID = '#####'  # OAuth 2.0 Client ID
-CLIENT_SECRET = 'null'  # Client Secret
+CLIENT_SECRET = 'null'
 access_token = 'null'  # When using Implicit Grant Flow, can change lifetime of the access token
 refresh_token = 'null'  # Refreshing token requires use of client secret
 #  Access tokens obtained via the Implicit Grant Flow only stored on the device used to obtain the authorization
-#  If your application has a web server component, application should use the Authorization Code Grant Flow
 # server = Oauth2.OAuth2Server(CLIENT_ID, CLIENT_SECRET)
 # server.browser_authorize()
 # ACCESS_TOKEN = str(server.fitbit.client.session.token['access_token'])
