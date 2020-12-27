@@ -4,6 +4,7 @@ A lightweight, AWS deployable Flask application that allows you to perform all s
 ## TODO:
 * Delete unnecessary files in repository
 * Reorganize file structure
+* Use urllib library to encode URI
 * Hide secret API keys on AWS server
 * Get all Fitbit API routes working
 * Set up decent HTML front end
