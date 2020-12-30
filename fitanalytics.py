@@ -2,15 +2,16 @@ import os
 import datetime
 from flask import Flask, redirect, url_for, render_template, jsonify
 from flask_dance import OAuth2ConsumerBlueprint
+import pandas as pd
+import requests
 
 os.environ['OAUTHLIB_INSECURE_TRANSPORT'] = '1'
-
 
 #  Both Client ID and Client Secret key are stored in Windows Env Variables on my local machine
 client_id = os.environ.get('CLIENT_ID')  # App's Client ID from Fitbit Dev portal
 client_secret = os.environ.get('CLIENT_SECRET')  # App's Client Secret key from Fitbit Dev portal
-print(CLIENT_ID)
-print(CLIENT_SECRET)
+#print(CLIENT_ID)
+#print(CLIENT_SECRET)
 scopes = ["activity",
           "nutrition",
           "heartrate",
@@ -95,6 +96,17 @@ def report():
     today = datetime.date.today()
     # '-' represents the currently logged in user
     return jsonify(fitbit.session.get('https://api.fitbit.com/1/user/-/activities/date/{}.json'.format(today)).json())
+
+
+@app.route("/heart")
+def hr():
+    today = datetime.date.today()
+    data = jsonify(fitbit.session.get(
+        'https://api.fitbit.com/1/user/-/activities/heart/date/{}/today/{}.json'.format('2020-01-15', '1min')).json())
+    #resp = requests.get('https://api.fitbit.com/1/user/-/activities/heart/date/{}/today/{}.json'.format('2020-01-15', '1min'))
+    #txt = resp.json()
+    #return pd.DataFrame(txt['metrics'])
+    return data
 
 
 @app.route('/login/fitbit-api')
