@@ -5,8 +5,12 @@ from flask_dance import OAuth2ConsumerBlueprint
 
 os.environ['OAUTHLIB_INSECURE_TRANSPORT'] = '1'
 
-CLIENT_ID = '#####'  # App's Client ID from Fitbit Dev portal
-CLIENT_SECRET = '########'  # App's Client Secret key from Fitbit Dev portal
+
+#  Both Client ID and Client Secret key are stored in Windows Env Variables on my local machine
+client_id = os.environ.get('CLIENT_ID')  # App's Client ID from Fitbit Dev portal
+client_secret = os.environ.get('CLIENT_SECRET')  # App's Client Secret key from Fitbit Dev portal
+print(CLIENT_ID)
+print(CLIENT_SECRET)
 scopes = ["activity",
           "nutrition",
           "heartrate",
@@ -22,8 +26,8 @@ scopes = ["activity",
 app = Flask(__name__)
 fitbit = OAuth2ConsumerBlueprint(
     "fitbit-api", __name__,
-    client_id=CLIENT_ID,
-    client_secret=CLIENT_SECRET,
+    client_id=client_id,
+    client_secret=client_secret,
     base_url="https://www.fitbit.com",
     token_url="https://api.fitbit.com/oauth2/token",
     authorization_url="https://www.fitbit.com/oauth2/authorize",
