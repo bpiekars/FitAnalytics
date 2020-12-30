@@ -6,7 +6,7 @@ from flask_dance import OAuth2ConsumerBlueprint
 os.environ['OAUTHLIB_INSECURE_TRANSPORT'] = '1'
 
 CLIENT_ID = '#####'  # App's Client ID from Fitbit Dev portal
-CLIENT_SECRET = '##################'  # App's Client Secret key from Fitbit Dev portal
+CLIENT_SECRET = '########'  # App's Client Secret key from Fitbit Dev portal
 scopes = ["activity",
           "nutrition",
           "heartrate",
@@ -30,7 +30,7 @@ fitbit = OAuth2ConsumerBlueprint(
     scope=scopes
 )
 app.register_blueprint(fitbit, url_prefix="/login")
-app.secret_key = os.urandom(24)
+app.secret_key = os.urandom(24)  # App secret must be set to access Flask's session object
 
 
 @app.route("/")
@@ -100,9 +100,9 @@ def login():
     Redirect the user/resource owner to the OAuth provider (i.e. Github)
     using an URL with a few key OAuth parameters.
     """
-    if not fitbit.authorized:
-        return redirect(fitbit.base_url)
-    fitbit.session.get('https://api.fitbit.com/1/user/-/profile.json')
+    # if not fitbit.authorized:
+    #    return redirect(fitbit.base_url)
+    # fitbit.session.get('https://api.fitbit.com/1/user/-/profile.json')
 
     # fitbit = fitbit_blueprint.session_class
 
