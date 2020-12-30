@@ -1,13 +1,12 @@
-# from fitbit import gather_keys_oauth2 as oauth2  # gather_keys_oauth2.py file needs to be in same directory as main file
-from flask import Flask, redirect, url_for, render_template, jsonify
-from flask_dance import OAuth2ConsumerBlueprint
 import os
 import datetime
+from flask import Flask, redirect, url_for, render_template, jsonify
+from flask_dance import OAuth2ConsumerBlueprint
 
 os.environ['OAUTHLIB_INSECURE_TRANSPORT'] = '1'
 
 CLIENT_ID = '#####'  # App's Client ID from Fitbit Dev portal
-CLIENT_SECRET = '#######'  # App's Client Secret key from Fitbit Dev portal
+CLIENT_SECRET = '##################'  # App's Client Secret key from Fitbit Dev portal
 scopes = ["activity",
           "nutrition",
           "heartrate",
