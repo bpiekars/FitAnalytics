@@ -4,14 +4,19 @@ from flask import Flask, redirect, url_for, render_template, jsonify
 from flask_dance import OAuth2ConsumerBlueprint
 import pandas as pd
 import requests
+import json
+import matplotlib.pyplot as plt
+import io
+import base64
 
 os.environ['OAUTHLIB_INSECURE_TRANSPORT'] = '1'
+today = datetime.date.today()
 
 #  Both Client ID and Client Secret key are stored in Windows Env Variables on my local machine
 client_id = os.environ.get('CLIENT_ID')  # App's Client ID from Fitbit Dev portal
 client_secret = os.environ.get('CLIENT_SECRET')  # App's Client Secret key from Fitbit Dev portal
-#print(CLIENT_ID)
-#print(CLIENT_SECRET)
+# print(CLIENT_ID)
+# print(CLIENT_SECRET)
 scopes = ["activity",
           "nutrition",
           "heartrate",
@@ -75,16 +80,16 @@ def callback():
     return redirect(url_for('/profile'))
 
 
-@app.route("/profile", methods=['GET', 'POST'])
-def profile():
-    """Fetching a protected resource using an OAuth 2 token.
-    """
-    # fitbit_session = OAuth2Session(CLIENT_ID, token=fitbit.token)
-    # r = fitbit_session.get('https://api.fitbit.com/1/user/-/sleep/goal.json')
-    # return fitbit.session.get('https://api.fitbit.com/1/user/-/profile.json')
-    # '-' represents the currently logged in user
-    return jsonify(fitbit.session.get('https://api.fitbit.com/1/user/-/profile.json').json())
-    # return redirect(url_for(fitbit.session.get('https://api.fitbit.com/1/user/-/profile.json')))
+# @app.route("/profile", methods=['GET', 'POST'])
+# def profile():
+#    """Fetching a protected resource using an OAuth 2 token.
+#    """
+#    # fitbit_session = OAuth2Session(CLIENT_ID, token=fitbit.token)
+#    # r = fitbit_session.get('https://api.fitbit.com/1/user/-/sleep/goal.json')
+#    # return fitbit.session.get('https://api.fitbit.com/1/user/-/profile.json')
+#    # '-' represents the currently logged in user
+#    return jsonify(fitbit.session.get('https://api.fitbit.com/1/user/-/profile.json').json())
+# return redirect(url_for(fitbit.session.get('https://api.fitbit.com/1/user/-/profile.json')))
 
 
 # @app.route("/callback")
@@ -93,20 +98,45 @@ def profile():
 
 @app.route("/daily")
 def report():
-    today = datetime.date.today()
     # '-' represents the currently logged in user
     return jsonify(fitbit.session.get('https://api.fitbit.com/1/user/-/activities/date/{}.json'.format(today)).json())
 
 
 @app.route("/heart")
 def hr():
-    today = datetime.date.today()
     data = jsonify(fitbit.session.get(
         'https://api.fitbit.com/1/user/-/activities/heart/date/{}/today/{}.json'.format('2020-01-15', '1min')).json())
-    #resp = requests.get('https://api.fitbit.com/1/user/-/activities/heart/date/{}/today/{}.json'.format('2020-01-15', '1min'))
-    #txt = resp.json()
-    #return pd.DataFrame(txt['metrics'])
     return data
+
+
+@app.route("/weight")
+def weight():
+    data = jsonify(fitbit.session.get(
+        'https://api.fitbit.com/1/user/-/body/log/weight/date/{}.json'.format('2020-01-15')).json())
+    return data
+
+
+@app.route('/plot')
+def build_plot():
+    img = io.BytesIO()
+
+    y = [1, 2, 3, 4, 5]
+    x = [0, 2, 1, 3, 4]
+    plt.plot(x, y)
+    plt.savefig(img, format='png')
+    img.seek(0)
+
+    plot_url = base64.b64encode(img.getvalue()).decode()
+
+    return '<img src="data:image/png;base64,{}">'.format(plot_url)
+
+
+@app.route("/profile")
+def profile():
+    link = 'https://api.fitbit.com/1/user/-/profile.json'
+    data = jsonify(fitbit.session.get(link)).json()
+    return data
+    # return json.dumps(data, indent=4, sort_keys=True)
 
 
 @app.route('/login/fitbit-api')
