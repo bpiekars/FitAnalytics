@@ -15,8 +15,6 @@ today = datetime.date.today()
 #  Both Client ID and Client Secret key are stored in Windows Env Variables on my local machine
 client_id = os.environ.get('CLIENT_ID')  # App's Client ID from Fitbit Dev portal
 client_secret = os.environ.get('CLIENT_SECRET')  # App's Client Secret key from Fitbit Dev portal
-# print(CLIENT_ID)
-# print(CLIENT_SECRET)
 scopes = ["activity",
           "nutrition",
           "heartrate",
@@ -136,28 +134,6 @@ def profile():
     link = 'https://api.fitbit.com/1/user/-/profile.json'
     data = jsonify(fitbit.session.get(link)).json()
     return data
-    # return json.dumps(data, indent=4, sort_keys=True)
-
-
-@app.route('/login/fitbit-api')
-def login():
-    """Step 1: User Authorization.
-
-    Redirect the user/resource owner to the OAuth provider (i.e. Github)
-    using an URL with a few key OAuth parameters.
-    """
-    # if not fitbit.authorized:
-    #    return redirect(fitbit.base_url)
-    # fitbit.session.get('https://api.fitbit.com/1/user/-/profile.json')
-
-    # fitbit = fitbit_blueprint.session_class
-
-    # fitbit = OAuth2Session(CLIENT_ID)
-    # State is used to prevent CSRF, keep this for later.\
-    # authorization_url, state = fitbit.authorization_url(authorization_base_url)
-    # state = fitbit_blueprint.state
-    # return redirect(url_for("fitbit-api.login"))
-    # return redirect(fitbit_blueprint.authorization_url)
 
 
 # Redirect URI = http://127.0.0.1:
