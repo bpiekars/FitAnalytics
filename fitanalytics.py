@@ -2,9 +2,6 @@ import os
 import datetime
 from flask import Flask, redirect, url_for, render_template, jsonify
 from flask_dance import OAuth2ConsumerBlueprint
-import pandas as pd
-import requests
-import json
 import matplotlib.pyplot as plt
 import io
 import base64

@@ -2,6 +2,11 @@
 
 {% block head %}
 <title>FitAnalytics</title>
+<script type="text/javascript">
+    if (window.location.hash && window.location.hash == '#_=_') {
+        window.location.hash = 'success';
+    }
+</script>
 {% endblock %}
 
 {% block body %}
