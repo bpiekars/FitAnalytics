@@ -40,56 +40,8 @@ app.secret_key = os.urandom(24)  # App secret must be set to access Flask's sess
 
 @app.route("/")
 def index():
-    # return redirect(url_for("fitbit-api.login"))
     return render_template('index.html')
-    # return redirect(url_for("fitbit-api.login"))
-    # fitbit = fitbit_blueprint.session_class
-    # fitbit = OAuth2Session(CLIENT_ID)
-    # State is used to prevent CSRF, keep this for later.\
-    # authorization_url, state = fitbit.authorization_url(authorization_base_url)
-    # state = fitbit_blueprint.state
-    # return redirect(url_for("fitbit-api.login"))
-    # return redirect(fitbit_blueprint.authorization_url)
-    # return "Hello, world"
 
-
-# Step 2: User authorization, this happens on the provider.
-
-@app.route("/login/fitbit-api/authorized", methods=["GET"])
-def callback():
-    """ Step 3: Retrieving an access token.
-
-    The user has been redirected back from the provider to your registered
-    callback URL. With this redirection comes an authorization code included
-    in the redirect URL. We will use that to obtain an access token.
-    """
-
-    # fitbit = OAuth2Session(CLIENT_ID, state=fitbit_blueprint.session)
-    # token = fitbit.fetch_token(fitbit.token_url, client_secret=CLIENT_SECRET,
-    #                          authorization_response=request.url)
-
-    # At this point you can fetch protected resources but lets save
-    # the token and show how this is done from a persisted token
-    # in /profile.
-    # session['oauth_token'] = token
-    return redirect(url_for('/profile'))
-
-
-# @app.route("/profile", methods=['GET', 'POST'])
-# def profile():
-#    """Fetching a protected resource using an OAuth 2 token.
-#    """
-#    # fitbit_session = OAuth2Session(CLIENT_ID, token=fitbit.token)
-#    # r = fitbit_session.get('https://api.fitbit.com/1/user/-/sleep/goal.json')
-#    # return fitbit.session.get('https://api.fitbit.com/1/user/-/profile.json')
-#    # '-' represents the currently logged in user
-#    return jsonify(fitbit.session.get('https://api.fitbit.com/1/user/-/profile.json').json())
-# return redirect(url_for(fitbit.session.get('https://api.fitbit.com/1/user/-/profile.json')))
-
-
-# @app.route("/callback")
-# def access():
-#    return "Success"
 
 @app.route("/daily")
 def report():
@@ -129,9 +81,8 @@ def build_plot():
 @app.route("/profile")
 def profile():
     link = 'https://api.fitbit.com/1/user/-/profile.json'
-    data = jsonify(fitbit.session.get(link)).json()
+    data = jsonify(fitbit.session.get(link).json())
     return data
-
 
 # Redirect URI = http://127.0.0.1:
 if __name__ == '__main__':
