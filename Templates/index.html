@@ -5,12 +5,13 @@
 <script type="text/javascript">
     if (window.location.hash && window.location.hash == '#_=_') {
         window.location.hash = 'success';
+        alert('You have successfully logged in!');
     }
 </script>
 {% endblock %}
 
 {% block body %}
-<h1>Template</h1>
+<h1>Welcome to FitAnalytics!</h1>
 <button onclick="window.location.href='/login/fitbit-api';">
     Login
 </button>
@@ -22,6 +23,9 @@
 </button>
 <button onclick="window.location.href='/profile';">
     Profile
+</button>
+<button onclick="window.location.href='/weight';">
+    Weight
 </button>
 
 {% endblock %}
